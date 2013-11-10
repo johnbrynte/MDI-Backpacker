@@ -81,7 +81,7 @@ var section = (function() {
     };
     
     self.removeSection = function( i ) {
-        if( sections.length > 0 ) {
+        if( sections.length > 0 && i < sections.length ) {
             sections[i].animate({
                 'left': ((i-1)*CONST.menu.SECTION_WIDTH)+'px',
             }, {
@@ -95,7 +95,7 @@ var section = (function() {
             sections.splice(i, 1);
         }
     };
-    
+
     return self;
 })();
 
@@ -149,8 +149,27 @@ $('#content').append($('#menu').load('menu.html', function() {
                 break;
             case 2:
                 section.addSection('information.html', function(){
-                    $("#information-menu button").button();                    
+                    $("#information-menu button").click(function(){
+                        var classes;     
+                        $(this).toggleClass("ui-state-active");
+                        $(this).toggleClass("ui-state-default");
+                        classes = $(this).attr("class");  
+          
+                        if($(this).hasClass("ui-state-active")){
+                            section.removeSection(1);
+                            section.addSection("about_stockholm.html");      
+                        }else{
+                            section.removeSection(1);
+                        }
+
+                        $("#information-menu button").removeClass("ui-state-active");
+                        $("#information-menu button").addClass("ui-state-default");
+                        $(this).attr("class", classes);
+                                   
+                    });
                 });
+
+               
                 break;
             case 3:
                 section.addSection('recommendations.html');
@@ -231,3 +250,5 @@ function searchResultAddActivityEvent( index ) {
         }
     };
 };
+
+
