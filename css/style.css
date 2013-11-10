@@ -50,15 +50,46 @@ input[type=button] {
     outline: none;
 }
 
+#menu .notification-wrapper {
+    position: relative;
+}
+
+#menu .notification-wrapper .notification {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    width: 20px;
+    height: 20px;
+    
+    text-align: center;
+    color: #fff;
+    background: #f00;
+    border-radius: 10px;
+    
+    display: none;
+}
+
 #content .section {
     position: absolute;
-    top: 0; bottom: 0;
+    top: -20px; bottom: -20px;
     
     background: #fff;
     border-right: 1px solid #aaa;
 }
 
 #search {
+    padding: 20px;
+}
+
+#my-activities {
+    padding: 20px;
+}
+
+#information {
+    padding: 20px;
+}
+
+#recommendations {
     padding: 20px;
 }
 

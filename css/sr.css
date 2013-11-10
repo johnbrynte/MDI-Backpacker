@@ -13,14 +13,14 @@
 	min-width:20%;
 }
 
-#search-results .sr-content{
+#search .search-results .sr-content{
 	padding: 10px;
 }
 
-#search-results .sr-content div{
+#search .search-results .sr-content div{
 }
 
-.sr-text{
+.sr-description{
 	float: left;
 	width: 73%;
 }

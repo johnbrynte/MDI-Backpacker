@@ -1,17 +1,23 @@
 var currentSection = -1;
 var map;
+var myPos;
 var tmpMarker;
 var infoWindow;
+var newActivities;
 
 var activities = [
     {
         title: 'Stockholms stadshus',
         description: 'The Stockholm stadshus is located at Kungsholmen.',
+        price: '100 kr',
+        img: null,
         pos: new google.maps.LatLng(59.327578, 18.053664),
     },
     {
         title: 'Vasamuseet',
         description: 'A museum displaying the Swedish warship Vasa which sunk on 10 august 1628.',
+        price: '100 kr',
+        img: null,
         pos: new google.maps.LatLng(59.328264, 18.091693),
     },
 ];
@@ -26,6 +32,7 @@ var CONST = {
     'menu': {
         'MENU_WIDTH': 300,
         'SECTION_WIDTH': 500,
+        'NOTIFICATION_TIME': 100,
     },
     'section': {
         'SHOW_TIME': 250,
@@ -102,46 +109,14 @@ $('#content').append($('#menu').load('menu.html', function() {
             case 0:
                 section.addSection('search.html', function() {
                     $('#search-button').click(function() {
-                        var result = $('#search .search-result');
-                        result.html('');
-                        for( var i = 0; i < activities.length; i ++ ) {
-                            result.append($('<li>')
-                                .append($('<p>').html(activities[i].title)
-                                    .click((function( activity ) {
-                                        return function() {
-                                            if( tmpMarker ) {
-                                                tmpMarker.setMap(null);
-                                            }
-                                            tmpMarker = new google.maps.Marker({
-                                                position: activity.pos,
-                                                map: map,
-                                                title: activity.title,
-                                            });
-                                            infoWindow = new google.maps.InfoWindow({
-                                                content: $('<div>')
-                                                    .append($('<div>').addClass('activity-info')
-                                                        .append($('<p>').html(activity.title))
-                                                        .append($('<p>').html(activity.description))
-                                                    ).html(),
-                                            });
-                                            infoWindow.open(map, tmpMarker);
-                                        };
-                                    })(activities[i]))
-                                )
-                                .append($('<div>').addClass('content')
-                                    .append($('<p>').html(activities[i].description))
-                                    .append($('<input>').attr({
-                                        'type': 'button',
-                                        'value': 'Add activity',
-                                    }))
-                                )
-                            );
-                        }
+                        appendSearchResultsHtml(activities, $('#search .search-results'));
                     });
                 });
                 break;
             case 1:
+                resetActivityNotification();
                 section.addSection('my_activities.html');
+                loadChosenActivities();
                 break;
             case 2:
                 section.addSection('information.html');
@@ -156,7 +131,7 @@ $('#content').append($('#menu').load('menu.html', function() {
         }
     });
     // load the Google map
-    var myPos = new google.maps.LatLng(59.314798, 18.044056);
+    myPos = new google.maps.LatLng(59.314798, 18.044056);
     var mapOptions = {
         center: myPos,
         zoom: 14,
@@ -175,4 +150,46 @@ $('#content').append($('#menu').load('menu.html', function() {
         ).html(),
     });
     info.open(map, marker);
+    
+    newActivities = 0;
 }));
+
+function resetActivityNotification() {
+    newActivities = 0;
+    $('#menu .notification-wrapper .notification').html(newActivities).hide(CONST.menu.NOTIFICATION_TIME);
+};
+
+function notifyNewActivity() {
+    newActivities ++;
+    $('#menu .notification-wrapper .notification').html(newActivities).show(CONST.menu.NOTIFICATION_TIME);
+};
+
+function searchResultExpandEvent( activity ) {
+    return function() {
+        if( tmpMarker ) {
+            tmpMarker.setMap(null);
+        }
+        tmpMarker = new google.maps.Marker({
+            position: activity.pos,
+            map: map,
+            title: activity.title,
+        });
+        infoWindow = new google.maps.InfoWindow({
+            content: $('<div>')
+                .append($('<div>').addClass('activity-info')
+                    .append($('<p>').html(activity.title))
+                    .append($('<p>').html(activity.description))
+                ).html(),
+        });
+        infoWindow.open(map, tmpMarker);
+    };
+};
+
+function searchResultAddActivityEvent( index ) {
+    return function() {
+        if( chosenActivities.indexOf(index) === -1 ) {
+            chosenActivities.push(index);
+            notifyNewActivity();
+        }
+    };
+};
