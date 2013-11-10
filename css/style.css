@@ -31,8 +31,6 @@ input[type=button] {
     left: 0;
     padding: 20px 0;
     
-    background: #ddd;
-    border-right: 1px solid #aaa;
     
     z-index: 10;
 }
@@ -43,12 +41,17 @@ input[type=button] {
     margin: 5px 10%;
     
     font-size: 20px;
+
+    border-radius: 10px;
+
     
-    background: #fff;
+   /* background: #fff;
     border: 1px solid #aaa;
     border-radius: 5px;
-    outline: none;
+    outline: none;*/
+
 }
+
 
 #menu .notification-wrapper {
     position: relative;
@@ -62,8 +65,6 @@ input[type=button] {
     height: 20px;
     
     text-align: center;
-    color: #fff;
-    background: #f00;
     border-radius: 10px;
     
     display: none;
