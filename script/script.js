@@ -129,7 +129,9 @@ $('#content').append($('#menu').load('menu.html', function() {
                 loadChosenActivities();
                 break;
             case 2:
-                section.addSection('information.html');
+                section.addSection('information.html', function(){
+                    $("#information-menu button").button();                    
+                });
                 break;
             case 3:
                 section.addSection('recommendations.html');
