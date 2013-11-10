@@ -1,0 +1,41 @@
+/**http://jqueryui.com/themeroller/#!zThemeParams=5d000001000306000000000000003d8888d844329a8dfe02723de3e5701258a13d5ba490adca99e4a02bf259c2fd269ea7f81e6dabc4fb6f52d5a226c746921396d4deb32d7cfb376c99daa667f5da170b5dc9220988f918cc773c465de740aade4ac03f634ec6de0524cdc4d846a7147c9ac662ddfd4ff80fddb1940d249069fc2d077fc94b74afa9868a1db55a4334461c7b9f358a34d61b76a39cab0793a7312a10d7f95c0b51fc513aadb7e5e07e85e74ff91b02158c683522571af4dce2f0f3dc702441947bf7b470446afb0bb54e5b34b6cffbc4da12c94159ded576eab2acae32bf03647f458d60b581948a5ebbff93083cb95308befe7b0dc656568f023437a23d844955a86b84a05922def260382df4567e9681c2130221d86a0fd571c1e4b7125e3679b091416c0b3ae6cc03e7d074755cd81473fd3d8f231a3a7a7338eb0f76690240ebbc9711a8a7ada148aae2b3a346022eea0311eaaf2868590f94d118fa8ed36012c79fb5ab5c68e8804b6832efdd8e3ed3160f6e98a7e20142917b001d4c053131eb7d4fea4854e0eb6b9609658301c541e6abcab6fd51484bf0d05471451523bb453e4da2786d63c9a1b6cba97a11f6193ea30c9f2233525f36c116bc768d1fc53165804610a7240f8fa91eb1fa05e9667cd2d051940a1fedcef158b0e9191e614804c11cfe241ea4de92407c4f929ce8b00af6b2f319f927fffa1cf21e*/
+
+.sr-head div{
+	display:inline-block;
+	text-align:center;
+}
+
+.sr-head .sr-name{
+	width:50%;
+}
+
+.sr-head .sr-distance, .sr-price{
+	min-width:20%;
+}
+
+#search-results .sr-content{
+	padding: 10px;
+}
+
+#search-results .sr-content div{
+}
+
+.sr-text{
+	float: left;
+	width: 73%;
+}
+
+.sr-img, .sr-save{
+	width:110px;
+	margin:auto;
+}
+
+.sr-img{
+	height:112px;
+}
+
+
+.sr-content-right{
+	float:right;
+	width: 112px;
+}
