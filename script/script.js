@@ -5,9 +5,19 @@ var tmpMarker;
 var infoWindow;
 var newActivities;
 
+var hostel = {
+    title: 'Zinkensdamms hostel',
+    address: 'Södermalm, Stockholm',
+    description: 'A beautiful hostel at Södermalm in Stockholm.',
+    price: '100 kr',
+    img: null,
+    pos: new google.maps.LatLng(59.314798, 18.044056),
+}
+
 var activities = [
     {
         title: 'Stockholms stadshus',
+        address: 'Kungsholmen, Stockholm',
         description: 'The Stockholm stadshus is located at Kungsholmen.',
         price: '100 kr',
         img: null,
@@ -15,6 +25,7 @@ var activities = [
     },
     {
         title: 'Vasamuseet',
+        address: 'Djurgården, Stockholm',
         description: 'A museum displaying the Swedish warship Vasa which sunk on 10 august 1628.',
         price: '100 kr',
         img: null,
@@ -73,7 +84,14 @@ var section = (function() {
         if( sections.length > 0 ) {
             sections[i].animate({
                 'left': ((i-1)*CONST.menu.SECTION_WIDTH)+'px',
-            }, CONST.section.HIDE_TIME);
+            }, {
+                'duration': CONST.section.HIDE_TIME,
+                'complete': (function( section ) {
+                    return function() {
+                        section.remove();
+                    };
+                })(sections[i]),
+            });
             sections.splice(i, 1);
         }
     };
@@ -115,8 +133,9 @@ $('#content').append($('#menu').load('menu.html', function() {
                 break;
             case 1:
                 resetActivityNotification();
-                section.addSection('my_activities.html');
-                loadChosenActivities();
+                section.addSection('my_activities.html', function() {
+                    loadChosenActivities();
+                });
                 break;
             case 2:
                 section.addSection('information.html');
@@ -166,23 +185,27 @@ function notifyNewActivity() {
 
 function searchResultExpandEvent( activity ) {
     return function() {
-        if( tmpMarker ) {
-            tmpMarker.setMap(null);
-        }
-        tmpMarker = new google.maps.Marker({
-            position: activity.pos,
-            map: map,
-            title: activity.title,
-        });
-        infoWindow = new google.maps.InfoWindow({
-            content: $('<div>')
-                .append($('<div>').addClass('activity-info')
-                    .append($('<p>').html(activity.title))
-                    .append($('<p>').html(activity.description))
-                ).html(),
-        });
-        infoWindow.open(map, tmpMarker);
+        showActivityInMap(activity);
     };
+};
+
+function showActivityInMap( activity ) {
+    if( tmpMarker ) {
+        tmpMarker.setMap(null);
+    }
+    tmpMarker = new google.maps.Marker({
+        position: activity.pos,
+        map: map,
+        title: activity.title,
+    });
+    infoWindow = new google.maps.InfoWindow({
+        content: $('<div>')
+            .append($('<div>').addClass('activity-info')
+                .append($('<p>').html(activity.title))
+                .append($('<p>').html(activity.description))
+            ).html(),
+    });
+    infoWindow.open(map, tmpMarker);
 };
 
 function searchResultAddActivityEvent( index ) {
