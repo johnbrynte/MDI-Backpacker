@@ -49,6 +49,9 @@ var CONST = {
         'SHOW_TIME': 250,
         'HIDE_TIME': 150,
     },
+    'toolbar': {
+        'MARGIN': 20,
+    },
 };
 
 var section = (function() {
@@ -78,6 +81,10 @@ var section = (function() {
         }
         sections.push(section);
         $('#content').append(section);
+        
+        $('#toolbar').animate({
+            'left': (CONST.menu.MENU_WIDTH+sections.length*CONST.menu.SECTION_WIDTH+CONST.toolbar.MARGIN)+'px'
+        }, CONST.section.SHOW_TIME);
     };
     
     self.removeSection = function( i ) {
@@ -93,6 +100,10 @@ var section = (function() {
                 })(sections[i]),
             });
             sections.splice(i, 1);
+            
+            $('#toolbar').animate({
+                'left': (CONST.menu.MENU_WIDTH+sections.length*CONST.menu.SECTION_WIDTH+CONST.toolbar.MARGIN)+'px'
+            }, CONST.section.HIDE_TIME);
         }
     };
 
@@ -203,6 +214,8 @@ $('#content').append($('#menu').load('menu.html', function() {
         ).html(),
     });
     info.open(map, marker);
+    
+    $('#toolbar').css('left', (CONST.menu.MENU_WIDTH+CONST.toolbar.MARGIN)+'px');
     
     newActivities = 0;
 }));
