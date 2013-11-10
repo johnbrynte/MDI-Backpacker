@@ -116,6 +116,16 @@ $('#content').append($('#menu').load('menu.html', function() {
     $('#menu').css({
         'width': CONST.menu.MENU_WIDTH+'px',
     });
+
+    // Fulhack to style clicks on buttons, jquery ui didn't work for some reason.
+    // possible due to css conflicts
+    $('#menu input[type=button]').mousedown(function(){
+        $(this).attr("class", "ui-state-active");
+    });
+    $('#menu input[type=button]').mouseup(function(){
+        $(this).attr("class", "ui-state-default");
+    });
+    
     $('#menu input[type=button]').click(function() {
         var i = $(this).index();
         if( i !== currentSection ) {
@@ -148,6 +158,9 @@ $('#content').append($('#menu').load('menu.html', function() {
             section.removeSection(0);
             currentSection = -1;
         }
+
+        $('#menu input[type=button]').attr("class", "ui-state-default");
+        $(this).attr("class", "ui-state-active");
     });
     // load the Google map
     myPos = new google.maps.LatLng(59.314798, 18.044056);
