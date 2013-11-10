@@ -73,13 +73,19 @@ input[type=button] {
 #content .section {
     position: absolute;
     top: -20px; bottom: -20px;
-    
-    background: #fff;
-    border-right: 1px solid #aaa;
+
+}
+
+.section>div{
+    height:100%;
 }
 
 #search {
-    padding: 20px;
+    padding: 50px 40px 0 40px;
+
+}
+.search-results h3{
+    padding-top:10px;
 }
 
 #my-activities {
@@ -108,8 +114,7 @@ input[type=button] {
     padding: 10px;
     
     border-radius: 10px;
-    border: 1px solid #aaa;
-    background: #fff;
+
 }
 
 #toolbar > .left {

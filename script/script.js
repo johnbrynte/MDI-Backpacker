@@ -147,6 +147,9 @@ $('#content').append($('#menu').load('menu.html', function() {
             switch(currentSection) {
             case 0:
                 section.addSection('search.html', function() {
+                    // make search options into an accordion
+                    $('#search-form').accordion();                    
+
                     $('#search-button').click(function() {
                         appendSearchResultsHtml(activities, $('#search .search-results'));
                     });

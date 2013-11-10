@@ -1,16 +1,20 @@
-﻿<div id="search">
-    <form>
+﻿<div id="search" class="ui-widget-content">
+    <form id="search-form">
+        <h2>Text search</h2>
         <div class="text-search">
             <input id="searchtype-text" type="radio" name="searchtype" checked />
             <label for="searchtype-text">Text search</label>
             <input type="text" />
             <input id="search-button" type="button" value="Search..." />
         </div>
+        <h2>Search by category</h2>
         <div class="category-search">
+
             <input id="searchtype-category" type="radio" name="searchtype" />
             <label for="searchtype-category">Choose by category</label>
         </div>
     </form>
     <div class="search-results">
+            <h3>Search results</h3>
     </div>
 </div>
