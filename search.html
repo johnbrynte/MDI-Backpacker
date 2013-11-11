@@ -1,20 +1,42 @@
-﻿<div id="search" class="ui-widget-content">
-    <form id="search-form">
-        <h2>Text search</h2>
-        <div class="text-search">
-            <input id="searchtype-text" type="radio" name="searchtype" checked />
-            <label for="searchtype-text">Text search</label>
-            <input type="text" />
-            <input id="search-button" type="button" value="Search..." />
+﻿<div id="search">
+    <form>
+        <div class="text-search search-type">
+            <div class="header">
+                <input id="searchtype-text" type="radio" name="searchtype" checked />
+                <label class="search-type" for="searchtype-text">Text search</label>
+            </div>
+            
+            <div class="search-content">
+                <input type="text" class="text" />
+                <input class="search-button" type="button" value="Search..." />
+                
+                <div class="overlay"></div>
+            </div>
         </div>
-        <h2>Search by category</h2>
-        <div class="category-search">
-
-            <input id="searchtype-category" type="radio" name="searchtype" />
-            <label for="searchtype-category">Choose by category</label>
+        <div class="category-search search-type">
+            <div class="header">
+                <input id="searchtype-category" type="radio" name="searchtype" />
+                <label class="search-type" for="searchtype-category">Choose by category</label>
+            </div>
+                
+            <div class="search-content">
+                <p><input type="radio" />Category 1</p>
+                <p><input type="radio" />Category 2</p>
+                <p><input type="radio" />Category 3</p>
+                <p><input type="radio" />Category 4</p>
+                <input class="search-button" type="button" value="Search..." />
+                
+                <div class="overlay"></div>
+            </div>
         </div>
     </form>
-    <div class="search-results">
-            <h3>Search results</h3>
+    <div class="search-results-container">
+        <h3>Search results</h3>
+        <div class="header ui-state-active">
+            <div class="title">Name</div>
+            <div class="distance">Distance</div>
+            <div class="price">Price</div>
+        </div>
+        <div class="search-results"></div>
     </div>
 </div>

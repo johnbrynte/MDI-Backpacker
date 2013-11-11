@@ -27,7 +27,7 @@ function appendSearchResultsHtml( data, container ){
         element.append(head, content);
     });
 
-    container.append(element);
+    container.html(element);
     element.accordion({
         collapsible:true,
         active:false,

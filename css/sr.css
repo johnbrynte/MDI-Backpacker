@@ -5,12 +5,18 @@
 	text-align:center;
 }
 
-.sr-head .sr-name{
+.sr-head .sr-title{
 	width:50%;
 }
 
 .sr-head .sr-distance, .sr-price{
 	min-width:20%;
+}
+
+.sr-distance {
+    border: 1px solid #aaa;
+    border-top: none;
+    border-bottom: none;
 }
 
 #search .search-results .sr-content{

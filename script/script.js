@@ -1,9 +1,13 @@
 var currentSection = -1;
+var newActivities;
+
+/* Google map */
 var map;
 var myPos;
 var tmpMarker;
 var infoWindow;
-var newActivities;
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
 
 var hostel = {
     title: 'Zinkensdamms hostel',
@@ -15,6 +19,7 @@ var hostel = {
 }
 
 var activities = [
+    hostel,
     {
         title: 'Stockholms stadshus',
         address: 'Kungsholmen, Stockholm',
@@ -33,7 +38,8 @@ var activities = [
     },
 ];
 
-var chosenActivities = [];
+var chosenActivities = [0];
+var activityMarkers = [];
 
 var CONST = {
     'screen': {
@@ -54,169 +60,9 @@ var CONST = {
     },
 };
 
-var section = (function() {
-    var self = {};
-    
-    var sections = [];
-    
-    self.addSection = function( content, callback ) {
-        var section = $('<div>').addClass('section');
-        section.css({
-            'width': CONST.menu.SECTION_WIDTH+'px',
-            'left': (CONST.menu.MENU_WIDTH+(sections.length-1)*CONST.menu.SECTION_WIDTH)+'px',
-        }).animate({
-            'left': (CONST.menu.MENU_WIDTH+sections.length*CONST.menu.SECTION_WIDTH)+'px',
-        }, CONST.section.SHOW_TIME);
-        if( content ) {
-            if( typeof content === 'string' ) {
-                if( (/.*.html$/g).test(content) ) {
-                    section.load(content, callback);
-                }
-            } else {
-                section.html(content);
-                if( callback ) {
-                    callback();
-                }
-            }
-        }
-        sections.push(section);
-        $('#content').append(section);
-        
-        $('#toolbar').animate({
-            'left': (CONST.menu.MENU_WIDTH+sections.length*CONST.menu.SECTION_WIDTH+CONST.toolbar.MARGIN)+'px'
-        }, CONST.section.SHOW_TIME);
-    };
-    
-    self.removeSection = function( i ) {
-        if( sections.length > 0 && i < sections.length ) {
-            sections[i].animate({
-                'left': ((i-1)*CONST.menu.SECTION_WIDTH)+'px',
-            }, {
-                'duration': CONST.section.HIDE_TIME,
-                'complete': (function( section ) {
-                    return function() {
-                        section.remove();
-                    };
-                })(sections[i]),
-            });
-            sections.splice(i, 1);
-            
-            $('#toolbar').animate({
-                'left': (CONST.menu.MENU_WIDTH+sections.length*CONST.menu.SECTION_WIDTH+CONST.toolbar.MARGIN)+'px'
-            }, CONST.section.HIDE_TIME);
-        }
-    };
-
-    return self;
-})();
-
-$('#content').append($('#menu').load('menu.html', function() {
-    var ratio = $(window).width()/CONST.screen.WIDTH;
-    $('body').css({
-        'zoom': ratio,
-    });
-    /*
-    $(window).resize(function() {
-        var ratio = $(window).width()/CONST.screen.WIDTH;
-        $('body').css({
-            'zoom': ratio,
-        });
-    });
-    */
-
-    $('#menu').css({
-        'width': CONST.menu.MENU_WIDTH+'px',
-    });
-    
-    $('#menu input[type=button]').click(function() {
-        var i = $(this).index();
-        if( i !== currentSection ) {
-            currentSection = i;
-            
-            section.removeSection(0);
-            
-            switch(currentSection) {
-            case 0:
-                section.addSection('search.html', function() {
-                    // make search options into an accordion
-                    $('#search-form').accordion();                    
-
-                    $('#search-button').click(function() {
-                        appendSearchResultsHtml(activities, $('#search .search-results'));
-                    });
-                });
-                break;
-            case 1:
-                resetActivityNotification();
-                section.addSection('my_activities.html', function() {
-                    loadChosenActivities();
-                });
-                break;
-            case 2:
-                section.addSection('information.html', function(){
-                    $("#information-menu button").click(function(){
-                        var classes;     
-                        $(this).toggleClass("ui-state-active");
-                        $(this).toggleClass("ui-state-default");
-                        classes = $(this).attr("class");  
-          
-                        if($(this).hasClass("ui-state-active")){
-                            section.removeSection(1);
-                            section.addSection("about_stockholm.html");      
-                        }else{
-                            section.removeSection(1);
-                        }
-
-                        $("#information-menu button").removeClass("ui-state-active");
-                        $("#information-menu button").addClass("ui-state-default");
-                        $(this).attr("class", classes);
-                                   
-                    });
-                });
-
-               
-                break;
-            case 3:
-                section.addSection('recommendations.html');
-                break;
-            }
-        } else {
-            section.removeSection(0);
-            currentSection = -1;
-        }
-
-        $('#menu input[type=button]').attr("class", "ui-state-default");
-        $(this).attr("class", "ui-state-active");
-    });
-    // load the Google map
-    myPos = new google.maps.LatLng(59.314798, 18.044056);
-    var mapOptions = {
-        center: myPos,
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-    };
-    /*map = new google.maps.Map($('#map')[0], mapOptions);
-    // To add the marker to the map, use the 'map' property
-    var marker = new google.maps.Marker({
-        position: myPos,
-        map: map,
-        title: 'You are here',
-    });
-    var info = new google.maps.InfoWindow({
-        content: $('<div>').append(
-            $('<div>').addClass('info-window').html('You are here')
-        ).html(),
-    });
-    info.open(map, marker);*/
-    
-    $('#toolbar').css('left', (CONST.menu.MENU_WIDTH+CONST.toolbar.MARGIN)+'px');
-    
-    newActivities = 0;
-}));
-
 function resetActivityNotification() {
     newActivities = 0;
-    $('#menu .notification-wrapper .notification').html(newActivities).hide(CONST.menu.NOTIFICATION_TIME);
+    $('#menu .notification-wrapper .notification').hide(CONST.menu.NOTIFICATION_TIME);
 };
 
 function notifyNewActivity() {
@@ -253,9 +99,186 @@ function searchResultAddActivityEvent( index ) {
     return function() {
         if( chosenActivities.indexOf(index) === -1 ) {
             chosenActivities.push(index);
+            activityMarkers.push(new google.maps.Marker({
+                position: activities[index].pos,
+                map: map,
+                title: activities[index].title,
+            }));
+            updateRoute();
             notifyNewActivity();
         }
     };
 };
 
+function updateRoute() {
+    if( chosenActivities.length > 1 ) {
+        var waypoints, content, i;
+        waypoints = [];
+        // Google map directions
+        for( i = 1; i < chosenActivities.length-1; i ++ ) {
+            waypoints.push({
+                location: activities[chosenActivities[i]].pos,
+                stopover: false,
+            });
+        }
+        var request = {
+            origin: activities[chosenActivities[0]].pos,
+            destination: activities[chosenActivities[chosenActivities.length-1]].pos,
+            waypoints: waypoints,
+            travelMode: google.maps.TravelMode.WALKING,
+        };
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+        // Toolbar route
+        content = $('#toolbar .planned-trip');
+        content.html('');
+        for( i = 1; i < chosenActivities.length; i ++ ) {
+            content.append($('<p>').html(i+'. '+activities[chosenActivities[i]].title));
+        }
+    } else {
+        $('#toolbar .planned-trip').html($('<p>').html('No activities chosen'));
+    }
+};
 
+(function() {
+    var ratio = $(window).width()/CONST.screen.WIDTH;
+    $('body').css({
+        'zoom': ratio,
+    });
+    /*
+    $(window).resize(function() {
+        var ratio = $(window).width()/CONST.screen.WIDTH;
+        $('body').css({
+            'zoom': ratio,
+        });
+    });
+    */
+
+    $('#menu').css({
+        'width': CONST.menu.MENU_WIDTH+'px',
+    });
+    
+    $('#menu input[type=button]').click(function() {
+        var i = $(this).index();
+        $('#menu input[type=button]').removeClass('active');
+        $(this).addClass('active');
+        if( i !== currentSection ) {
+            currentSection = i;
+            
+            section.removeSection(0);
+            
+            switch(currentSection) {
+            case 0:
+                section.addSection('search.html', function() {
+                    $('#search input[type=button]').button();
+                
+                    $('#search .text-search .header').addClass('active');
+                    $('#search .text-search .overlay').hide();
+                    
+                    $('#searchtype-text').click(function() {
+                        $('#search .text-search .header').addClass('active');
+                        $('#search .category-search .header').removeClass('active');
+                        $('#search .text-search .overlay').hide();
+                        $('#search .category-search .overlay').show();
+                    });
+                    
+                    $('#searchtype-category').click(function() {
+                        $('#search .text-search .header').removeClass('active');
+                        $('#search .category-search .header').addClass('active');
+                        $('#search .text-search .overlay').show();
+                        $('#search .category-search .overlay').hide();
+                    });
+                
+                    $('#search .search-content .search-button').click(function() {
+                        appendSearchResultsHtml(activities, $('#search .search-results'));
+                    });
+                });
+                break;
+            case 1:
+                resetActivityNotification();
+                section.addSection('my_activities.html', function() {
+                    loadChosenActivities();
+                    $('#plan-button').button().click(function() {
+                        if( $(this).attr('expanded') ) {
+                            section.removeSection(1);
+                            $(this).removeAttr('expanded');
+                        } else {
+                            section.removeSection(1);
+                            section.addSection("planner.html");
+                            $(this).attr('expanded', true);
+                        }
+                    });
+                });
+                break;
+            case 2:
+                section.addSection('information.html', function(){
+                    $("#information-menu button").click(function(){
+                        var classes;     
+                        $(this).toggleClass("ui-state-active");
+                        $(this).toggleClass("ui-state-default");
+                        classes = $(this).attr("class");  
+          
+                        if($(this).hasClass("ui-state-active")){
+                            section.removeSection(1);
+                            section.addSection("about_stockholm.html");      
+                        }else{
+                            section.removeSection(1);
+                        }
+
+                        $("#information-menu button").removeClass("ui-state-active");
+                        $("#information-menu button").addClass("ui-state-default");
+                        $(this).attr("class", classes);
+                                   
+                    });
+                });
+
+               
+                break;
+            case 3:
+                section.addSection('recommendations.html', function() {
+                    var content = $('#recommendations .recommendations');
+                    for( var i = 0; i < activities.length; i ++ ) {
+                        content.append($('<div>').append($('<p>').html(activities[i].title)).button());
+                    }
+                });
+                break;
+            }
+        } else {
+            section.removeSection(0);
+            currentSection = -1;
+        }
+    });
+    
+    // load the Google map
+    myPos = new google.maps.LatLng(59.314798, 18.044056);
+    var mapOptions = {
+        center: myPos,
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+    };
+    map = new google.maps.Map($('#map')[0], mapOptions);
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+    // Show the hostel position
+    activityMarkers.push(new google.maps.Marker({
+        position: myPos,
+        map: map,
+        title: 'You are here',
+    }));
+    //Show 'you are here' text
+    /*var info = new google.maps.InfoWindow({
+        content: $('<div>').append(
+            $('<div>').addClass('info-window').html('You are here')
+        ).html(),
+    });
+    info.open(map, activityMarkers[0]);*/
+    
+    // Load the map toolbar
+    $('#toolbar').css('left', (CONST.menu.MENU_WIDTH+CONST.toolbar.MARGIN)+'px');
+    updateRoute();
+    
+    newActivities = 0;
+})();

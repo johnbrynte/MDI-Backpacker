@@ -1,0 +1,109 @@
+﻿#my-activities {
+    padding: 20px;
+}
+
+#my-activities .travel-text {
+    width: 60%;
+    height: 30px;
+    margin: 0 20%;
+}
+
+#my-activities .travel-text div {
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+}
+
+#my-activities .travel {
+    width: 60%;
+    height: 40px;
+    margin: 0 20%;
+    
+    border-radius: 20px;
+    border: 1px solid #aaa;
+    background: #fff;
+    overflow: hidden;
+}
+
+#my-activities .travel div {
+    width: 32%;
+    height: 100%;
+    float: left;
+}
+
+#my-activities .travel div.selected {
+    background: #ccc;
+}
+
+#my-activities .travel div img {
+    margin: 5px 15px;
+}
+
+#my-activities .travel .public-transport {
+    border: 1px solid #aaa;
+    border-top: none;
+    border-bottom: none;
+}
+
+#my-activities .activity {
+    margin: 10px 0;
+    padding: 5px 60px 5px 10px;
+
+    border: 1px solid #aaa;
+    background: url(../images/dragndrop.png);
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+}
+
+#my-activities .activity .title {
+    font-weight: bold;
+}
+
+#my-activities .planner {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    padding: 20px;
+    height: 140px;
+    
+    background: #fff;
+    border-top: 1px solid #aaa;
+}
+
+#plan-button {
+    width: 100%;
+    height: 80px;
+    
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#planner {
+    width: 710px;
+    
+    border-right: 1px solid #aaa;
+}
+
+#planner .plan-container {
+    position: absolute;
+    top: 0; bottom: 180px;
+    width: 710px;
+    
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#planner .save-menu {
+    position: absolute;
+    bottom: 0;
+    width: 710px;
+    height: 180px;
+    
+    background: #fff;
+    border-top: 1px solid #aaa;
+}
+
+#planner .save-menu img {
+    height: 100%;
+}

@@ -25,13 +25,15 @@ input[type=button] {
     overflow: hidden;
 }
 
+/* Menu */
 #menu {
     position: absolute;
     top: 0; bottom: 0;
     left: 0;
     padding: 20px 0;
     
-    
+    background: #ddd;
+    border-right: 1px solid #aaa;
     z-index: 10;
 }
 
@@ -40,18 +42,22 @@ input[type=button] {
     height: 100px;
     margin: 5px 10%;
     
-    font-size: 20px;
-
+    background: #f9a755 url(jquery-ui/images/ui-bg_highlight-soft_75_f9a755_1x100.png) 50% 50% repeat-x;
+    font-size: 24px;
     border-radius: 10px;
-
-    
-   /* background: #fff;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    outline: none;*/
-
+    outline: none;
 }
 
+#menu input[type=button].active {
+    color: #fff;
+    background: #bb4b13;
+}
+
+#menu input[type=button]:hover {
+    color: #000;
+    background: #ffd0b7 url(images/ui-bg_highlight-soft_75_ffd0b7_1x100.png) 50% 50% repeat-x;
+    border: 1px solid #999999;
+}
 
 #menu .notification-wrapper {
     position: relative;
@@ -61,35 +67,29 @@ input[type=button] {
     position: absolute;
     top: 20px;
     right: 40px;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     
     text-align: center;
-    border-radius: 10px;
+    font-size: 20px;
+    border-radius: 12px;
     
     display: none;
+    
+    color: #fff;
+    background: #f00;
 }
 
 #content .section {
     position: absolute;
-    top: -20px; bottom: -20px;
+    top: 0; bottom: 0;
 
+    background: #eee;
+    border-right: 1px solid #bbb;
 }
 
-.section>div{
+.section > div{
     height:100%;
-}
-
-#search {
-    padding: 50px 40px 0 40px;
-
-}
-.search-results h3{
-    padding-top:10px;
-}
-
-#my-activities {
-    padding: 20px;
 }
 
 #information {
@@ -100,49 +100,99 @@ input[type=button] {
     padding: 20px;
 }
 
+#recommendations .recommendations div {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Google map*/
 #map {
     position: absolute;
     top: 0; bottom: 0;
     left: 0; right: 0;
 }
 
+#map .activity-info {
+    width: 200px;
+}
+
+#map .activity-info .title {
+    font-weight: bold;
+}
+
+/* Toolbar */
 #toolbar {
     position: absolute;
     right: 20px;
     bottom: 20px;
-    height: 300px;
+    height: 250px;
     padding: 10px;
     
     border-radius: 10px;
-
+    overflow: hidden;
 }
 
 #toolbar > .left {
-    position: absolute;
-    top: 10px; bottom: 10px;
-    left: 10px;
+    float: left;
+    width: 49%;
     
     border-right: 1px solid #aaa;
+    overflow: hidden;
 }
 
-#toolbar > .right {
-    position: absolute;
-    top: 10px; bottom: 10px;
-    right: 10px;
+#toolbar > .left > .content {
+    padding: 0 10px;
 }
 
 #toolbar > .left .categories {
-    height: 100%;
+    width: 600px;
+    height: 160px;
+    
+    border: 1px solid #aaa;
+    background: #ddd;
+    overflow-y: scroll;
 }
 
 #toolbar > .left .categories > .left {
     float: left;
+    width: 50%;
+    height: 100%;
     
     border-right: 1px solid #aaa;
 }
 
 #toolbar > .left .categories > .right {
     float: right;
+    width: 49%;
+    height: 100%;
+}
+
+#toolbar > .right {
+    position: relative;
+    float: left;
+    width: 50%;
+    
+    overflow: hidden;
+}
+
+#toolbar > .right > .content {
+    padding: 0 10px;
+}
+
+#toolbar > .right .show-route {
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+#toolbar > .right .planned-trip {
+    width: 600px;
+    height: 160px;
+    padding: 0 10px;
+    
+    border: 1px solid #aaa;
+    background: #ddd;
+    overflow-y: scroll;
 }
 
 #information-menu{
@@ -156,4 +206,100 @@ input[type=button] {
     height:74px;
     margin:0 auto 20px auto;
     display:block;
+}
+
+/* Search section */
+#search {
+
+}
+
+#search label.search-type {
+    width: 100%;
+    margin: 5px;
+
+    font-weight: bold;
+}
+
+#search .search-content {
+    position: relative;
+    padding: 10px 20px;
+    
+    overflow: auto;
+}
+
+#search .overlay {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+#search div.search-type {
+    padding: 10px;
+}
+
+#search div.search-type > .header {
+    padding: 5px 20px;
+    background: #ddd;
+}
+
+#search div.search-type > .header.active {
+    background: #ccc;
+}
+
+#search div.search-type > .header input[type=radio] {
+    width: 20px;
+    height: 20px;
+}
+
+#search .search-results {
+}
+
+#search .search-results h3{
+    padding-top: 10px;
+}
+
+#search .text-search {
+    border-bottom: 1px solid #aaa;
+}
+
+#search .text-search .text {
+    display: block;
+}
+
+#search .text-search .search-content .text {
+    width: 100%;
+    height: 40px;
+}
+
+#search .search-results-container {
+    border-top: 1px solid #aaa;
+}
+
+#search .search-results-container .header {
+    padding-left: 2.2em;
+}
+
+#search .search-results-container .header div {
+    display: inline-block;
+}
+
+#search .search-results-container .header .title {
+    width: 50%;
+}
+
+#search .search-results-container .header .title,
+#search .search-results-container .header .distance,
+#search .search-results-container .header .price {
+    min-width: 20%;
+}
+
+#search .search-results-container h3 {
+    margin: 0;
+    padding: 10px 20px;
+    background: #ccc;
+}
+
+#search .search-content .search-button {
+    float: right;
 }
