@@ -127,15 +127,6 @@ $('#content').append($('#menu').load('menu.html', function() {
     $('#menu').css({
         'width': CONST.menu.MENU_WIDTH+'px',
     });
-
-    // Fulhack to style clicks on buttons, jquery ui didn't work for some reason.
-    // possible due to css conflicts
-    $('#menu input[type=button]').mousedown(function(){
-        $(this).attr("class", "ui-state-active");
-    });
-    $('#menu input[type=button]').mouseup(function(){
-        $(this).attr("class", "ui-state-default");
-    });
     
     $('#menu input[type=button]').click(function() {
         var i = $(this).index();
@@ -204,7 +195,7 @@ $('#content').append($('#menu').load('menu.html', function() {
         zoom: 14,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
-    map = new google.maps.Map($('#map')[0], mapOptions);
+    /*map = new google.maps.Map($('#map')[0], mapOptions);
     // To add the marker to the map, use the 'map' property
     var marker = new google.maps.Marker({
         position: myPos,
@@ -216,7 +207,7 @@ $('#content').append($('#menu').load('menu.html', function() {
             $('<div>').addClass('info-window').html('You are here')
         ).html(),
     });
-    info.open(map, marker);
+    info.open(map, marker);*/
     
     $('#toolbar').css('left', (CONST.menu.MENU_WIDTH+CONST.toolbar.MARGIN)+'px');
     
