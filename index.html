@@ -3,62 +3,12 @@
 <title>Backpacker prototype</title>
 <head>
     <link href="css/style.css" rel="stylesheet" />
-    <link href="css/sr.css" rel="stylesheet" />
-    <link href="css/ma.css" rel="stylesheet" />
-    <link href="css/jquery-ui/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
     <script src="script/jquery-2.0.3.min.js"></script>
-    <script src="script/jquery-ui-1.10.3.custom.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB56g-mbdIen-j9jhHmAPXTS7ideqnbCn8&sensor=false&libraries=geometry"></script>
-    <script src="script/section.js"></script>
-    <script src="script/sr.js"></script>
-    <script src="script/ma.js"></script>
 </head>
 <body>
 <div id="content">
-    <div id="menu">
-        <input type="button" value="Search" />
-        <div class="notification-wrapper">
-            <div class="notification"></div>
-            <input type="button" value="My activities" />
-        </div>
-        <input type="button" value="Information" />
-        <input type="button" value="Recommendations" />
-    </div>
-    <div id="map"></div>
-    <div id="toolbar" class="ui-widget-content">
-        <div class="left">
-            <div class="content">
-                <h3>Filter activities</h3>
-                <div class="categories">
-                    <div class="left">
-                        <ul>
-                            <li><input type="checkbox" />Restaurants</li>
-                            <li><input type="checkbox" />Coffee shops</li>
-                            <li><input type="checkbox" />Museums</li>
-                            <li><input type="checkbox" />Music</li>
-                        </ul>
-                    </div>
-                    <div class="right">
-                        <ul>
-                            <li><input type="checkbox" />Sights</li>
-                            <li><input type="checkbox" />Shopping</li>
-                            <li><input type="checkbox" />Sport</li>
-                            <li><input type="checkbox" />Health care</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="right">
-            <div class="content">
-                <h3>Your route</h3>
-                <p class="show-route"><input type="checkbox" checked /><b>Show route</b></p>
-                <div class="planned-trip">
-                </div>
-            </div>
-        </div>
-    </div>
+    <img id="start-screen" src="images/start.png" />
 </div>
-<script src="script/script.js"></script>
+<script src="script/start.js"></script>
 </body>
 </html>

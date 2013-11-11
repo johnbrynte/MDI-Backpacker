@@ -58,6 +58,9 @@ var CONST = {
     'toolbar': {
         'MARGIN': 20,
     },
+    'keyboard': {
+        'SHOW_TIME': 200,
+    },
 };
 
 function resetActivityNotification() {
@@ -156,6 +159,10 @@ function updateRoute() {
         });
     });
     */
+    
+    $('#keyboard').click(function() {
+        $(this).hide(CONST.keyboard.SHOW_TIME);
+    });
 
     $('#menu').css({
         'width': CONST.menu.MENU_WIDTH+'px',
@@ -194,6 +201,11 @@ function updateRoute() {
                 
                     $('#search .search-content .search-button').click(function() {
                         appendSearchResultsHtml(activities, $('#search .search-results'));
+                        $('#keyboard').hide(CONST.keyboard.SHOW_TIME);
+                    });
+                    
+                    $('#search-query').click(function() {
+                        $('#keyboard').show(CONST.keyboard.SHOW_TIME);
                     });
                 });
                 break;
